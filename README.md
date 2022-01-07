@@ -1,6 +1,4 @@
-# flutter_fire2
-
-A new Flutter project.
+<h2>Note: This app is under development...!!!</h2>
 
 ## Getting Started
 
