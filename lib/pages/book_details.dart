@@ -2,7 +2,7 @@ import 'package:books_finder/books_finder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fire2/main.dart';
-import 'package:flutter_fire2/pages/auth_page.dart';
+import 'package:flutter_fire2/utils/auth.dart';
 
 class BookDetails extends StatefulWidget {
   const BookDetails({Key? key}) : super(key: key);
