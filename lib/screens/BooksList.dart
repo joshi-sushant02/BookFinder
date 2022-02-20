@@ -32,7 +32,12 @@ class _MyAppState extends State<ShowBooks> {
     Color(0xFFFF90B3),
     Color(0xFFFFC2E2),
     Color(0xFFB892FF),
-    Color(0xFFB892FF)
+    Color(0xFFDCE775),
+    Color(0xFFEF7A85),
+    Color(0xFFFF90B3),
+    Color(0xFFFFC2E2),
+    Color(0xFFB892FF),
+    Color(0xFFDCE775),
   ];
 
   @override
@@ -43,27 +48,34 @@ class _MyAppState extends State<ShowBooks> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Find your Book',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(),
       home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => BookData()));
-          },
-        ),
         appBar: AppBar(
+          backgroundColor: Colors.brown[400],
           title: const Text('Find your Book'),
           leading: IconButton(
-            icon: Icon(Icons.ac_unit_outlined),
+            tooltip: "LOGOUT",
+            icon: Icon(Icons.logout_sharp),
             onPressed: () async {
               await auth2.signOut();
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MyApp()));
             },
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => BookData()));
+              },
+              icon: Icon(
+                Icons.label_important,
+                size: 30,
+              ),
+            )
+          ],
         ),
         body: Column(
           children: [
@@ -112,6 +124,8 @@ class _MyAppState extends State<ShowBooks> {
                       itemCount: snapshot.data!.items.length,
                       itemBuilder: (BuildContext content, int index) {
                         return AwesomeListItem(
+                            bookid:
+                                snapshot.data!.items[index].bookid.toString(),
                             title: snapshot.data!.items[index].volumeinfo.title
                                 .toString(),
                             content: snapshot
@@ -213,6 +227,7 @@ class _MyAppState extends State<ShowBooks> {
 
 class AwesomeListItem extends StatefulWidget {
   String title;
+  String bookid;
   String content;
   String description;
   Color color;
@@ -225,6 +240,7 @@ class AwesomeListItem extends StatefulWidget {
       required this.description,
       required this.content,
       required this.color,
+      required this.bookid,
       required this.function,
       required this.canonicalVolumeLink,
       required this.image});
@@ -293,6 +309,7 @@ class _AwesomeListItemState extends State<AwesomeListItem> {
                           MaterialPageRoute(
                               builder: (context) => SelectedBookScreen(
                                   cover: widget.image,
+                                  bookid: widget.bookid,
                                   title: widget.title,
                                   function: widget.function,
                                   author: widget.content,

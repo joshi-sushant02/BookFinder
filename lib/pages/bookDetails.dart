@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SelectedBookScreen extends StatelessWidget {
   String title;
+  String bookid;
   String cover;
   String description;
   String author;
@@ -12,6 +13,7 @@ class SelectedBookScreen extends StatelessWidget {
   VoidCallback function;
   SelectedBookScreen({
     required this.cover,
+    required this.bookid,
     required this.title,
     required this.function,
     required this.description,
@@ -26,10 +28,10 @@ class SelectedBookScreen extends StatelessWidget {
         height: 49,
         color: Colors.transparent,
         child: FlatButton(
-          color: Colors.amberAccent,
+          color: Colors.brown,
           onPressed: function,
           child: Text(
-            'Add to Library',
+            'Click to Save',
             style: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white),
           ),
@@ -45,27 +47,22 @@ class SelectedBookScreen extends StatelessWidget {
                 backgroundColor: Colors.white,
                 expandedHeight: MediaQuery.of(context).size.height * 0.5,
                 flexibleSpace: Container(
-                  color: Colors.deepOrange,
+                  color: Colors.deepOrange[200],
                   height: MediaQuery.of(context).size.height * 0.5,
                   child: Stack(
                     children: <Widget>[
-                      Positioned(
-                        left: 25,
-                        top: 35,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacementNamed(
-                                context, "/homeScreen");
-                          },
-                          child: Container(
-                            width: 32,
-                            height: 32,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white),
-                            child: Icon(Icons.backpack_sharp),
-                            //  SvgPicture.asset(
-                            //     'assets/icons/icon_back_arrow.svg'),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          // margin: EdgeInsets.only(bottom: 62),
+                          // width: 172,
+                          // height: 225,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                              repeat: ImageRepeat.repeat,
+                              image: NetworkImage(cover),
+                            ),
                           ),
                         ),
                       ),
@@ -73,16 +70,47 @@ class SelectedBookScreen extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         child: Container(
                           margin: EdgeInsets.only(bottom: 62),
-                          width: 172,
-                          height: 225,
+                          width: 185,
+                          height: 238,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
                             image: DecorationImage(
                               image: NetworkImage(cover),
                             ),
                           ),
                         ),
-                      )
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 70),
+                          width: 170,
+                          height: 220,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0xFFffffff),
+                                blurRadius: 5,
+                                spreadRadius: 1,
+                                offset: Offset(-2, -2),
+                              ),
+                              BoxShadow(
+                                color: Color(0xFFbebebe),
+                                // color: Colors.black,
+                                blurRadius: 5,
+                                spreadRadius: 1,
+                                offset: Offset(2, 2),
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                              fit: BoxFit.contain,
+                              image: NetworkImage(cover),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -110,26 +138,21 @@ class SelectedBookScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.only(top: 7, left: 25),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          '\$',
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600),
+                  padding: EdgeInsets.only(top: 7, left: 25),
+                  child: InkWell(
+                      child: new Text(
+                        'Buy Now 👈🏻',
+                        style: TextStyle(
+                          fontFamily: 'LeonSans',
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.brown,
+                          letterSpacing: 1.5,
+                          height: 2,
                         ),
-                        Text(
-                          "100",
-                          style: TextStyle(
-                              fontSize: 32,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    )),
+                      ),
+                      onTap: () => launch('$canonicalVolumeLink')),
+                ),
                 Container(
                   height: 28,
                   margin: EdgeInsets.only(top: 23, bottom: 36),
@@ -147,7 +170,7 @@ class SelectedBookScreen extends StatelessWidget {
                         unselectedLabelStyle: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w600),
                         indicator: RoundedRectangleTabIndicator(
-                            weight: 2, width: 30, color: Colors.black),
+                            weight: 2, width: 50, color: Colors.black),
                         tabs: [
                           Tab(
                             child: Container(
@@ -156,17 +179,23 @@ class SelectedBookScreen extends StatelessWidget {
                             ),
                           ),
                           Tab(
-                            child: Container(
-                              margin: EdgeInsets.only(right: 39),
-                              child: Text('Reviews'),
-                            ),
+                            child: InkWell(
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 39),
+                                  child: Text('Preview'),
+                                ),
+                                onTap: () => launch(
+                                    'https://books.google.co.in/books?id=$bookid&hl=&cd=1&source=gbs_api')),
                           ),
                           Tab(
-                            child: Container(
-                              margin: EdgeInsets.only(right: 39),
-                              child: Text('Similar'),
-                            ),
-                          )
+                            child: InkWell(
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 39),
+                                  child: Text('Similar'),
+                                ),
+                                onTap: () => launch(
+                                    'https://www.google.co.in/search?tbm=bks&hl=en&q=$title')),
+                          ),
                         ]),
                   ),
                 ),
@@ -182,21 +211,6 @@ class SelectedBookScreen extends StatelessWidget {
                       height: 2,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 25, right: 25, bottom: 25),
-                  child: new InkWell(
-                      child: new Text(
-                        'Open Browser',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey,
-                          letterSpacing: 1.5,
-                          height: 2,
-                        ),
-                      ),
-                      onTap: () => launch('$canonicalVolumeLink')),
                 ),
               ]))
             ],

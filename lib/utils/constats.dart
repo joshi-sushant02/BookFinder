@@ -11,8 +11,9 @@ final kLabelStyle = TextStyle(
   fontFamily: 'LeonSans',
 );
 
-final kBoxDecorationStyle = BoxDecoration(
-  color: Color(0xFF6CA8F1),
+var kBoxDecorationStyle = BoxDecoration(
+  color: Colors.brown[300],
+  // color: Color(0xFF6CA8F1),
   borderRadius: BorderRadius.circular(10.0),
   boxShadow: [
     BoxShadow(

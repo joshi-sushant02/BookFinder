@@ -53,17 +53,17 @@ class Album {
 }
 
 class Item {
-  final String kind;
+  final String bookid;
 
   final String etag;
 
   final VolumeInfo volumeinfo;
 
-  Item({required this.kind, required this.etag, required this.volumeinfo});
+  Item({required this.bookid, required this.etag, required this.volumeinfo});
 
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
-        kind: json['kind'],
+        bookid: json['id'],
         etag: json['etag'],
         volumeinfo: VolumeInfo.fromJson(json['volumeInfo']));
   }
@@ -111,7 +111,7 @@ class VolumeInfo {
               "https://books.google.co.in/?hl=en&tab=pp&authuser=0",
           image: ImageLinks(
               thumb:
-                  "http://books.google.com/books/content?id=kwFjDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"));
+                  "http://books.google.com/books/content?id=4yIEwQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"));
     }
   }
 }
@@ -128,7 +128,7 @@ class ImageLinks {
     } catch (e) {
       return ImageLinks(
           thumb:
-              "http://books.google.com/books/content?id=kwFjDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api");
+              "http://books.google.com/books/content?id=4yIEwQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api");
     }
   }
 }

@@ -181,7 +181,7 @@ class LoginBtn extends StatelessWidget {
         child: Text(
           'LOGIN',
           style: TextStyle(
-            color: Color(0xFF527DAA),
+            color: Colors.brown,
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.bold,

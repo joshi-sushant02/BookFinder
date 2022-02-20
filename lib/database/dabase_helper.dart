@@ -51,10 +51,9 @@ CREATE TABLE $booktable(
     print("book added");
   }
 
-  Future deletebook() async {
+  Future deletebook(int _id) async {
     final _db = await database;
-    final id = await _db.rawDelete(
-        "DELETE FROM $booktable WHERE  id = (SELECT Max($idd) FROM $booktable) ");
+    final id = await _db.rawDelete("DELETE FROM $booktable WHERE  id = $_id");
     print("book deleted");
   }
 

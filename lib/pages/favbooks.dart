@@ -12,13 +12,18 @@ class BookData extends StatefulWidget {
 
 class _BookDataState extends State<BookData> {
   Future<List<dynamic>> getbooks() async {
-    final List book = await DatabaseHelper.instance.getbook();
-    print(book);
-    return book;
+    try {
+      final List book = await DatabaseHelper.instance.getbook();
+      print(book);
+      return book;
+    } catch (e) {
+      List book = [];
+      return book;
+    }
   }
 
-  Future delbook() async {
-    final del = await DatabaseHelper.instance.deletebook();
+  Future delbook(int _id) async {
+    final del = await DatabaseHelper.instance.deletebook(_id);
     print(del);
     print("book deleted");
   }
@@ -40,7 +45,21 @@ class _BookDataState extends State<BookData> {
             Container(
               height: MediaQuery.of(context).size.height * 0.2,
               decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.brown[500],
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFFffffff),
+                      blurRadius: 4,
+                      // spreadRadius: 2,
+                      offset: Offset(-5, -5),
+                    ),
+                    BoxShadow(
+                      color: Color(0xFFbebebe),
+                      blurRadius: 4,
+                      // spreadRadius: 2,
+                      offset: Offset(5, 5),
+                    ),
+                  ],
                   borderRadius:
                       BorderRadius.only(bottomRight: Radius.circular(40))),
               child: Stack(
@@ -61,8 +80,13 @@ class _BookDataState extends State<BookData> {
                       top: 70,
                       left: 20,
                       child: Text(
-                        "Saved Books",
-                        style: TextStyle(fontSize: 20, color: Colors.blue),
+                        "SAVED BOOKS",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.brown,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'LeonSans',
+                        ),
                       ))
                 ],
               ),
@@ -82,11 +106,15 @@ class _BookDataState extends State<BookData> {
                         itemCount: bookdata.data!.length,
                         itemBuilder: (context, index) {
                           return FavBooksList(
+                            image: bookdata.data![index]['cover'].toString(),
                             title: bookdata.data![index]['title'].toString(),
-                            color: COLORS[Random().nextInt(5)],
+                            // color: Color(0xFFe0e0e0),
+                            color: Color(0xFFBCAAA4),
+                            // Colors.brown
+                            // color: COLORS[Random().nextInt(5)],
                             author: bookdata.data![index]['author'].toString(),
                             function: () {
-                              delbook();
+                              delbook(bookdata.data![index]['id']);
                               getbooks();
                               Navigator.push(
                                   context,
@@ -183,6 +211,7 @@ class _BookDataState extends State<BookData> {
 class FavBooksList extends StatefulWidget {
   Color color;
   String title;
+  String image;
   String author;
   VoidCallback function;
   FavBooksList({
@@ -190,6 +219,7 @@ class FavBooksList extends StatefulWidget {
     required this.function,
     required this.title,
     required this.author,
+    required this.image,
   });
 
   @override
@@ -211,10 +241,16 @@ class _FavBooksListState extends State<FavBooksList> {
           ),
           boxShadow: [
             BoxShadow(
-              color: widget.color.withOpacity(0.4),
-              blurRadius: 8,
-              spreadRadius: 2,
-              offset: Offset(4, 4),
+              color: Color(0xFFffffff),
+              blurRadius: 5,
+              // spreadRadius: 2,
+              offset: Offset(-5, -5),
+            ),
+            BoxShadow(
+              color: Color(0xFFbebebe),
+              blurRadius: 5,
+              // spreadRadius: 2,
+              offset: Offset(5, 5),
             ),
           ],
           borderRadius: BorderRadius.all(Radius.circular(24)),
@@ -230,42 +266,70 @@ class _FavBooksListState extends State<FavBooksList> {
                     children: <Widget>[
                       Icon(
                         Icons.label,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 24,
                       ),
                       SizedBox(width: 8),
                       Text(
                         widget.author,
                         style: TextStyle(
-                            color: Colors.white, fontFamily: 'avenir'),
+                            color: Colors.brown, fontFamily: 'avenir'),
                       ),
                     ],
                   ),
-                  Switch(
-                    onChanged: (bool value) {},
-                    value: true,
-                    activeColor: Colors.white,
-                  ),
+                  Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: Container(
+                        child: Image(
+                          fit: BoxFit.cover,
+                          image: NetworkImage("${widget.image}"),
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.brown[900],
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFFffffff),
+                              blurRadius: 1,
+                              // spreadRadius: 2,
+                              offset: Offset(3, 3),
+                            ),
+                            BoxShadow(
+                              color: Color(0xFFbebebe),
+                              blurRadius: 1,
+                              // spreadRadius: 2,
+                              offset: Offset(-3, -3),
+                            ),
+                          ],
+                        ),
+                        height: 90,
+                        width: 70,
+                      ))
+                  // Switch(
+                  //   onChanged: (bool value) {},
+                  //   value: true,
+                  //   activeColor: Colors.black,
+                  // ),
                 ],
               ),
-              Text(
-                'Mon-Fri',
-                style: TextStyle(color: Colors.white, fontFamily: 'avenir'),
-              ),
+              // Text(
+              //   'saved',
+              //   style: TextStyle(color: Colors.black, fontFamily: 'avenir'),
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    widget.title[20],
+                    "${widget.title.substring(0, 7)}...",
                     style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.brown[900],
                         fontFamily: 'avenir',
                         fontSize: 24,
                         fontWeight: FontWeight.w700),
                   ),
                   IconButton(
+                      padding: EdgeInsets.only(right: 10, top: 10),
                       icon: Icon(Icons.delete),
-                      color: Colors.white,
+                      color: Colors.brown[900],
                       onPressed: widget.function),
                 ],
               ),
